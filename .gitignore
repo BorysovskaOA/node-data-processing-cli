@@ -1,0 +1,3 @@
+workspace/
+npm-debug.log*
+*.log
