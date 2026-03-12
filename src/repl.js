@@ -1,8 +1,8 @@
 
 
 import readline from 'node:readline';
+import process from 'node:process';
 import { InvalidInputError, INVALID_INPUT_ERROR_CODE } from './utils/errors.js';
-import { getCurrentDirectory } from './navigation.js';
 import { COMMAND_HANDLERS_MAP } from './commands.js';
 
 const WELCOME_TEXT = 'Welcome to Data Processing CLI!';
@@ -11,33 +11,33 @@ const INVALID_COMMAND_TEXT = 'Invalid input';
 const OPERATION_FAILED_TEXT = 'Operation failed';
 const CURRENT_DIRECTORY_PREFIX = 'You are currently in';
 
+const onSuccess = () => {
+  console.log(`${CURRENT_DIRECTORY_PREFIX} ${process.cwd()}`);
+}
+
+const onError = (err) => {
+  if (err.code === INVALID_INPUT_ERROR_CODE) {
+    console.log(INVALID_COMMAND_TEXT);
+  } else {
+    console.log(OPERATION_FAILED_TEXT);
+  }
+}
+
+const handleCommand = async(command, commandArgs) => {
+  if (command in COMMAND_HANDLERS_MAP) {
+    try {
+      await COMMAND_HANDLERS_MAP[command](commandArgs);
+      onSuccess()
+    } catch (err) {
+      onError(err)
+    }
+
+  } else {
+    onError(new InvalidInputError());
+  }
+}
+
 export const initRepl = () => {
-  const onSuccess = () => {
-    console.log(`${CURRENT_DIRECTORY_PREFIX} ${getCurrentDirectory()}`);
-  }
-
-  const onError = (err) => {
-    if (err.code === INVALID_INPUT_ERROR_CODE) {
-      console.log(INVALID_COMMAND_TEXT);
-    } else {
-      console.log(OPERATION_FAILED_TEXT);
-    }
-  }
-  
-  const handleCommand = async(command, commandArgs) => {
-    if (command in COMMAND_HANDLERS_MAP) {
-      try {
-        await COMMAND_HANDLERS_MAP[command](commandArgs);
-        onSuccess()
-      } catch (err) {
-        onError(err)
-      }
-  
-    } else {
-      onError(new InvalidInputError());
-    }
-  }
-
   const rl = readline.createInterface({
     input: process.stdin, 
     output: process.stdout,
@@ -57,7 +57,7 @@ export const initRepl = () => {
   });
 
   rl.on('SIGINT', () => {
-    rl.close()
+    rl.close();
   });
 
   rl.on('close', () => {

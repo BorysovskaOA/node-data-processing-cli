@@ -1,18 +1,16 @@
 import os from 'node:os';
-
-let currentDirectory  = os.homedir();
-
-export const onChangeCurrentDirectory = (newDirectory) => {
-  currentDirectory = newDirectory;
-}
-
-export const getCurrentDirectory = () => {
-  return currentDirectory;
-}
+import path from 'node:path';
+import process from 'node:process';
 
 export const upHandler = () => {
-  console.log('upHandler');
-
+  if (process.cwd() !== os.homedir()) {
+    const newDirectory = process.cwd()
+    .split(path.sep)
+    .slice(0, -1)
+    .join(path.sep);
+    
+    process.chdir(newDirectory);
+  }
 }
 
 export const cdHandler = () => {
