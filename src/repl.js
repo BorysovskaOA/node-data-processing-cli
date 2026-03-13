@@ -54,7 +54,7 @@ export const initRepl = () => {
   });
 
   rl.on('line', async (line) => {
-    const lineTrimmed = line.trim().toLowerCase();
+    const lineTrimmed = line.trim();
     const [command, ...commandArgs] = lineTrimmed.split(' ');
 
     if (command === '.exit' && commandArgs.length === 0) {

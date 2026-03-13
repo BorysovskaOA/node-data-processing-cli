@@ -1,30 +1,19 @@
 import { Transform } from 'node:stream';
-import { pipeline } from 'node:stream/promises';
-import { createReadStream, createWriteStream } from 'node:fs';
-import { argParser } from '../utils/argParser.js';
-import { pathResolver } from '../utils/pathResolver.js';
+import { fileConfersionHandler } from '../utils/fileConversionHandler.js';
 
 const EXTRA_HEADER_NAME = 'Extra';
 const INDENT = 2;
+const LINE_SEPARATOR = /\r?\n/;
 
-export const csvToJsonHandler = async (args) => {
-  const inputArg = argParser(args, 'input', true);
-  const outputArg = argParser(args, 'output', true);
-
-  const inputPath = pathResolver(inputArg);
-  const outputPath = pathResolver(outputArg);
-
-  const inputStream = createReadStream(inputPath, { encoding: 'utf-8' });
-  const outputStream = createWriteStream(outputPath, { encoding: 'utf-8' });
-
+const getCsvToJsonTransformSteam = () => {
   let transformBuffer = '';
   let headers = [];
   let isFirstDataRow = true;
 
   const getDataPrefix = () => {
-    let prefix = ',\n';
+    let prefix = `,\n${' '.repeat(INDENT)}`;
     if (isFirstDataRow) {
-      prefix = '';
+      prefix = ' '.repeat(INDENT);
       isFirstDataRow = false;
     }
     return prefix;
@@ -43,23 +32,23 @@ export const csvToJsonHandler = async (args) => {
       }
       obj[header] = d;
     });
-    return JSON.stringify(obj, null, INDENT).replace(/^/gm, ' '.repeat(INDENT));
+    return JSON.stringify(obj);
   }
-  
-  const transformStream = new Transform({
+
+  return new Transform({
     transform(chunk, _, callback) {
       transformBuffer += chunk;
 
-      const lines = transformBuffer.split(/\r?\n/);
+      const lines = transformBuffer.split(LINE_SEPARATOR);
       transformBuffer = lines.pop();
-      
+
       lines.forEach((line) => {
         if (!line.trim()) {
           return;
         }
-        
+
         const parsedLineData = line.split(',');
-    
+
         if (!headers.length) {
           headers = parsedLineData.map(h => h.trim());
           this.push('[\n');
@@ -74,17 +63,17 @@ export const csvToJsonHandler = async (args) => {
       if (!transformBuffer.trim()) {
         return '\n]';
       }
-      
+
       const parsedLineData = transformBuffer.split(',');
-      this.push(`${getDataPrefix()}${transformDataToJsonString(parsedLineData)}\n]`);
+      this.push(`${getDataPrefix()}${transformDataToJsonString(parsedLineData)}\n]\n`);
 
       transformBuffer = '';
       callback();
     }
-  })
-  inputStream.on('error', (err) => { throw err });
-  transformStream.on('error', (err) => { throw err });
-  outputStream.on('error', (err) => { throw err });
+  });
+}
 
-  await pipeline(inputStream, transformStream, outputStream);
+export const csvToJsonHandler = async (args) => {
+  const transformStream = getCsvToJsonTransformSteam();
+  return fileConfersionHandler(args, '.csv', transformStream);
 }

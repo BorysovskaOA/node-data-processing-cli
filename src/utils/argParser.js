@@ -2,7 +2,7 @@ import { InvalidInputError } from './errors.js';
 
 export const argParser = (args, argName, required = false) => {
   const argIndex = args.findIndex(arg => arg.startsWith(`--${argName}`));
-  
+
   if (argIndex === -1) {
     if (required) {
       throw new InvalidInputError('Argument is required');
