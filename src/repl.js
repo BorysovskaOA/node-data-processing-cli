@@ -16,6 +16,8 @@ const onSuccess = () => {
 }
 
 const onError = (err) => {
+  // For testing only, TODO: delete before review
+  console.log(err); 
   if (err.code === INVALID_INPUT_ERROR_CODE) {
     console.log(INVALID_COMMAND_TEXT);
   } else {
@@ -33,7 +35,7 @@ const handleCommand = async(command, commandArgs) => {
     }
 
   } else {
-    onError(new InvalidInputError());
+    onError(new InvalidInputError('Invalid command'));
   }
 }
 
