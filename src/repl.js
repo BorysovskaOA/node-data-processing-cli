@@ -11,17 +11,23 @@ const INVALID_COMMAND_TEXT = 'Invalid input';
 const OPERATION_FAILED_TEXT = 'Operation failed';
 const CURRENT_DIRECTORY_PREFIX = 'You are currently in';
 
+const ANSI_COLORS = {
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+};
+const ANSI_COLOR_RESET = '\x1b[0m';
+
 const onSuccess = () => {
-  console.log(`${CURRENT_DIRECTORY_PREFIX} ${process.cwd()}`);
+  console.log(`${ANSI_COLORS.green}${CURRENT_DIRECTORY_PREFIX} ${process.cwd()}${ANSI_COLOR_RESET}`);
 }
 
 const onError = (err) => {
-  // For testing only, TODO: delete before review
+  // For testing only, TODO: delete before review next line
   console.log(err); 
   if (err.code === INVALID_INPUT_ERROR_CODE) {
-    console.log(INVALID_COMMAND_TEXT);
+    console.log(`${ANSI_COLORS.red}${INVALID_COMMAND_TEXT}${ANSI_COLOR_RESET}`);
   } else {
-    console.log(OPERATION_FAILED_TEXT);
+    console.log(`${ANSI_COLORS.red}${OPERATION_FAILED_TEXT}${ANSI_COLOR_RESET}`);
   }
 }
 
