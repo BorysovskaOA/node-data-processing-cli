@@ -2,6 +2,7 @@
 
 import readline from 'node:readline';
 import process from 'node:process';
+import { getCwd } from './cwdState.js';
 import { InvalidInputError, INVALID_INPUT_ERROR_CODE } from './utils/errors.js';
 import { COMMAND_HANDLERS_MAP } from './commands.js';
 
@@ -18,7 +19,7 @@ const ANSI_COLORS = {
 const ANSI_COLOR_RESET = '\x1b[0m';
 
 const onSuccess = () => {
-  console.log(`${ANSI_COLORS.green}${CURRENT_DIRECTORY_PREFIX} ${process.cwd()}${ANSI_COLOR_RESET}`);
+  console.log(`${ANSI_COLORS.green}${CURRENT_DIRECTORY_PREFIX} ${getCwd()}${ANSI_COLOR_RESET}`);
 }
 
 const onError = (err) => {
