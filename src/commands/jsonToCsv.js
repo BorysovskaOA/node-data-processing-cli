@@ -11,6 +11,7 @@ const getJsonToCsvTransformSteam = () => {
     },
     flush(callback) {
       const jsonData = JSON.parse(jsonStringBuffer);
+      jsonStringBuffer = '';
       if (!Array.isArray(jsonData)) {
         throw new Error('Invalid json type');
       }
@@ -25,6 +26,7 @@ const getJsonToCsvTransformSteam = () => {
         const valuesInHeadersOrder = headers.map((header) => row[header] || '');
         this.push(`${valuesInHeadersOrder.join(',')}\n`);
       })
+
       callback();
     }
   });
