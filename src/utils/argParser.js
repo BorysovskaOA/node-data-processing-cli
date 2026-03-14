@@ -2,6 +2,7 @@ import { parseArgs } from 'node:util';
 import { pathResolver } from './pathResolver.js';
 import { InvalidInputError } from './errors.js';
 
+
 const formatArgValue = (type, value) => {
   switch (type) {
     case 'path': {

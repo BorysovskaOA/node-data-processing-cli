@@ -1,4 +1,5 @@
-export const INVALID_INPUT_ERROR_CODE = 'INVALID_INPUT';
+import { INVALID_INPUT_ERROR_CODE } from '../constants.js';
+
 
 export class InvalidInputError extends Error {
   constructor(message) {

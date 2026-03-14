@@ -3,9 +3,8 @@ import { extname } from 'node:path';
 import { createReadStream } from 'node:fs';
 import { argParser } from '../utils/argParser.js';
 import { InvalidInputError } from '../utils/errors.js';
+import { LINE_SEPARATOR, WORD_SEPARATOR } from '../constants.js';
 
-const LINE_SEPARATOR = /\r?\n/;
-const WORD_SEPARATOR = /\s+/;
 
 const getWordsFromString = (str) => str.split(WORD_SEPARATOR).filter(w => w.length > 0);
 const getSum = (arr) => arr.reduce((acc, wc) => acc + wc, 0);

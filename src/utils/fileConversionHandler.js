@@ -4,6 +4,7 @@ import { createReadStream, createWriteStream } from 'node:fs';
 import { argParser } from '../utils/argParser.js';
 import { InvalidInputError } from '../utils/errors.js';
 
+
 export const fileConfersionHandler = async (args, fileExtention, transformStream) => {
   const parsedArgs = argParser(args, {
     input: { type: 'path', required: true },

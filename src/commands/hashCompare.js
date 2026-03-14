@@ -3,8 +3,8 @@ import { pipeline } from 'node:stream/promises';
 import { readFile } from 'node:fs/promises';
 import { createReadStream } from 'node:fs';
 import { argParser } from '../utils/argParser.js';
+import { SUPPORTED_ALGORYTHMS } from '../constants.js';
 
-const SUPPORTED_ALGORYTHMS = ['sha256', 'md5', 'sha512'];
 
 export const hashCompareHandler = async (args) => {
   const parsedArgs = argParser(args, {

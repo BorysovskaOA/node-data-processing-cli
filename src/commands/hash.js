@@ -3,8 +3,8 @@ import { pipeline } from 'node:stream/promises';
 import { Readable } from 'node:stream';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { argParser } from '../utils/argParser.js';
+import { SUPPORTED_ALGORYTHMS } from '../constants.js';
 
-const SUPPORTED_ALGORYTHMS = ['sha256', 'md5', 'sha512'];
 
 export const hashHandler = async (args) => {
   const parsedArgs = argParser(args, {

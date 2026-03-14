@@ -1,6 +1,7 @@
 import os from 'node:os';
 import { InvalidInputError } from './utils/errors.js';
 
+
 export const initialCwd = os.homedir();
 let cwd = initialCwd;
 

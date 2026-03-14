@@ -5,6 +5,8 @@ import process from 'node:process';
 import { getCwd } from './cwdState.js';
 import { InvalidInputError, INVALID_INPUT_ERROR_CODE } from './utils/errors.js';
 import { COMMAND_HANDLERS_MAP } from './commands.js';
+import { ANSI_COLORS, ANSI_COLOR_RESET } from './constants.js';
+
 
 const WELCOME_TEXT = 'Welcome to Data Processing CLI!';
 const EXIT_TEXT = 'Thank you for using Data Processing CLI!';
@@ -12,19 +14,13 @@ const INVALID_COMMAND_TEXT = 'Invalid input';
 const OPERATION_FAILED_TEXT = 'Operation failed';
 const CURRENT_DIRECTORY_PREFIX = 'You are currently in';
 
-const ANSI_COLORS = {
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-};
-const ANSI_COLOR_RESET = '\x1b[0m';
-
 const onSuccess = () => {
   console.log(`${ANSI_COLORS.green}${CURRENT_DIRECTORY_PREFIX} ${getCwd()}${ANSI_COLOR_RESET}`);
 }
 
 const onError = (err) => {
   // For testing only, TODO: delete before review next line
-  console.log(err); 
+  console.log(err);
   if (err.code === INVALID_INPUT_ERROR_CODE) {
     console.log(`${ANSI_COLORS.red}${INVALID_COMMAND_TEXT}${ANSI_COLOR_RESET}`);
   } else {
@@ -32,7 +28,7 @@ const onError = (err) => {
   }
 }
 
-const handleCommand = async(command, commandArgs) => {
+const handleCommand = async (command, commandArgs) => {
   if (command in COMMAND_HANDLERS_MAP) {
     try {
       await COMMAND_HANDLERS_MAP[command](commandArgs);
@@ -48,7 +44,7 @@ const handleCommand = async(command, commandArgs) => {
 
 export const initRepl = () => {
   const rl = readline.createInterface({
-    input: process.stdin, 
+    input: process.stdin,
     output: process.stdout,
     prompt: '> '
   });

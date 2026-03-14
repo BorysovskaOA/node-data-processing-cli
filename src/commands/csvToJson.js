@@ -1,9 +1,10 @@
 import { Transform } from 'node:stream';
 import { fileConfersionHandler } from '../utils/fileConversionHandler.js';
+import { LINE_SEPARATOR } from '../constants.js';
+
 
 const EXTRA_HEADER_NAME = 'Extra';
 const INDENT = 2;
-const LINE_SEPARATOR = /\r?\n/;
 
 const getCsvToJsonTransformSteam = () => {
   let transformBuffer = '';
