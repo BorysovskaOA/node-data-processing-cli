@@ -1,7 +1,9 @@
-import { countHandler } from './commands/count.js'
-import { csvToJsonHandler } from './commands/csvToJson.js'
-import { jsonToCsvHandler } from './commands/jsonToCsv.js'
-import { upHandler, cdHandler, lsHandler } from './navigation.js'
+import { countHandler } from './commands/count.js';
+import { hashHandler } from './commands/hash.js';
+import { hashCompareHandler } from './commands/hashCompare.js';
+import { csvToJsonHandler } from './commands/csvToJson.js';
+import { jsonToCsvHandler } from './commands/jsonToCsv.js';
+import { upHandler, cdHandler, lsHandler } from './navigation.js';
 
 export const COMMAND_HANDLERS_MAP = {
   up: upHandler,
@@ -10,4 +12,6 @@ export const COMMAND_HANDLERS_MAP = {
   'csv-to-json': csvToJsonHandler,
   'json-to-csv': jsonToCsvHandler,
   count: countHandler,
+  hash: hashHandler,
+  'hash-compare': hashCompareHandler
 }

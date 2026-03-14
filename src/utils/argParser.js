@@ -1,32 +1,47 @@
+import { parseArgs } from 'node:util';
+import { pathResolver } from './pathResolver.js';
 import { InvalidInputError } from './errors.js';
 
-export const argParser = (args, argName, required = false) => {
-  const argIndex = args.findIndex(arg => arg.startsWith(`--${argName}`));
-
-  if (argIndex === -1) {
-    if (required) {
-      throw new InvalidInputError('Argument is required');
-    } else {
-      return;
+const formatArgValue = (type, value) => {
+  switch (type) {
+    case 'path': {
+      return pathResolver(value);
     }
+    default:
+      return value;
+  }
+}
+
+export const argParser = (args, options) => {
+  const argOptions = Object.keys(options)
+    .reduce((acc, key) => {
+      return {
+        ...acc,
+        [key]: {
+          type: options[key].type === 'boolean' ? 'boolean' : 'string',
+          default: options[key].default
+        }
+      }
+    }, {});
+
+  let parsedArgs;
+
+  try {
+    parsedArgs = parseArgs({ args, options: argOptions }).values;
+  } catch (err) {
+    throw new InvalidInputError(err);
   }
 
-  const arg = args[argIndex];
-  let argValue;
+  const parsedArgsKeys = Object.keys(parsedArgs);
 
-  if (arg.includes('=')) {
-    argValue = arg.split('=')[1];
-  } else {
-    const nextArgvValue = args[argIndex + 1];
+  if (parsedArgsKeys.some((key) => (options[key].required && parsedArgs[key] === undefined))) {
+    throw new InvalidInputError('Invalid input');
+  }
 
-    if (nextArgvValue && !nextArgvValue.startsWith('--')) {
-      argValue = nextArgvValue;
+  return parsedArgsKeys.reduce((acc, key) => {
+    return {
+      ...acc,
+      [key]: formatArgValue(options[key].type, parsedArgs[key])
     }
-  }
-
-  if (!argValue && required) {
-    throw new InvalidInputError('Argument is required');
-  }
-
-  return argValue;
+  }, {})
 }

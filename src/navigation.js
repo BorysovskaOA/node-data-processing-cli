@@ -6,8 +6,8 @@ import { pathResolver } from './utils/pathResolver.js';
 
 export const upHandler = () => {
   if (getCwd() !== initialCwd) {
-    const newDirectory = pathResolver(`${getCwd}/..`);
-    chDir(newDirectory);
+    const newDirectory = pathResolver(`${getCwd()}/..`);
+    chCwd(newDirectory);
   }
 }
 
@@ -19,7 +19,7 @@ export const cdHandler = async (args) => {
   const newDirPath = pathResolver(pathToDirectory);
 
   const stats = await fs.stat(newDirPath);
-  
+
   if (stats.isDirectory()) {
     chCwd(newDirPath)
   } else {
