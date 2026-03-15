@@ -12,3 +12,9 @@ export const ANSI_COLORS = {
 };
 
 export const ANSI_COLOR_RESET = '\x1b[0m';
+
+export const ENCRYPTION_ALGORITHM = 'AES-256-GCM';
+export const SALT_SIZE = 16;
+export const IV_SIZE = 12;
+export const AUTH_TAG_SIZE = 16;
+export const KEY_SIZE = 32;

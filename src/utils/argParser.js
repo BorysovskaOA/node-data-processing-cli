@@ -35,7 +35,7 @@ export const argParser = (args, options) => {
 
   const parsedArgsKeys = Object.keys(parsedArgs);
 
-  if (parsedArgsKeys.some((key) => (options[key].required && parsedArgs[key] === undefined))) {
+  if (Object.keys(options).some((key) => (options[key].required && parsedArgs[key] === undefined))) {
     throw new InvalidInputError('Invalid input');
   }
 
