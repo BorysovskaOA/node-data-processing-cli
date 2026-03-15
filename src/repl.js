@@ -19,8 +19,6 @@ const onSuccess = () => {
 }
 
 const onError = (err) => {
-  // For testing only, TODO: delete before review next line
-  console.log(err);
   if (err.code === INVALID_INPUT_ERROR_CODE) {
     console.log(`${ANSI_COLORS.red}${INVALID_COMMAND_TEXT}${ANSI_COLOR_RESET}`);
   } else {
