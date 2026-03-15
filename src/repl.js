@@ -3,9 +3,9 @@
 import readline from 'node:readline';
 import process from 'node:process';
 import { getCwd } from './cwdState.js';
-import { InvalidInputError, INVALID_INPUT_ERROR_CODE } from './utils/errors.js';
+import { InvalidInputError } from './utils/errors.js';
 import { COMMAND_HANDLERS_MAP } from './commands.js';
-import { ANSI_COLORS, ANSI_COLOR_RESET } from './constants.js';
+import { ANSI_COLORS, ANSI_COLOR_RESET, INVALID_INPUT_ERROR_CODE } from './constants.js';
 
 
 const WELCOME_TEXT = 'Welcome to Data Processing CLI!';
