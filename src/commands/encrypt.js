@@ -1,11 +1,9 @@
-import { createCipheriv, scrypt as scryptCb, randomBytes } from 'node:crypto';
+import { createCipheriv, scrypt, randomBytes } from 'node:crypto';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { pipeline, finished } from 'node:stream/promises';
 import { promisify } from 'node:util';
 import { ENCRYPTION_ALGORITHM, IV_SIZE, KEY_SIZE, SALT_SIZE } from '../constants.js';
 import { argParser } from '../utils/argParser.js'
-
-const scrypt = promisify(scryptCb);
 
 export const encryptHandler = async (args) => {
   const parsedArgs = argParser(args, {
@@ -16,7 +14,7 @@ export const encryptHandler = async (args) => {
 
   const salt = randomBytes(SALT_SIZE);
   const iv = randomBytes(IV_SIZE);
-  const key = await scrypt(parsedArgs.password, salt, KEY_SIZE);
+  const key = await promisify(scrypt)(parsedArgs.password, salt, KEY_SIZE);
   const cipher = createCipheriv(ENCRYPTION_ALGORITHM, key, iv);
 
   const output = createWriteStream(parsedArgs.output);
