@@ -1,4 +1,5 @@
 
+export const SPACE_SEPARATOR = /\s+/;
 export const LINE_SEPARATOR = /\r?\n/;
 export const WORD_SEPARATOR = /\s+/;
 

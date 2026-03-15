@@ -15,7 +15,6 @@ const getDecryptEntities = async (inputFilePath, size) => {
   const authTag = Buffer.alloc(AUTH_TAG_SIZE);
 
   try {
-
     await handle.read(salt, 0, SALT_SIZE, 0);
     await handle.read(iv, 0, IV_SIZE, SALT_SIZE);
     await handle.read(authTag, 0, AUTH_TAG_SIZE, size - AUTH_TAG_SIZE);

@@ -1,9 +1,8 @@
 
-import { extname } from 'node:path';
 import { createReadStream } from 'node:fs';
 import { argParser } from '../utils/argParser.js';
-import { InvalidInputError } from '../utils/errors.js';
 import { LINE_SEPARATOR, WORD_SEPARATOR } from '../constants.js';
+import { validateFileExtention } from '../utils/validateFileExtention.js';
 
 
 const getWordsFromString = (str) => str.split(WORD_SEPARATOR).filter(w => w.length > 0);
@@ -14,10 +13,7 @@ export const countHandler = async (args) => {
     input: { type: 'path', required: true },
   });
 
-  const inputFileExt = extname(parsedArgs.input).toLowerCase();
-  if (inputFileExt !== '.txt') {
-    throw new InvalidInputError('Invalid file extention');
-  }
+  validateFileExtention(parsedArgs.input, '.txt');
 
   const readableStream = createReadStream(parsedArgs.input, { encoding: 'utf-8' });
 

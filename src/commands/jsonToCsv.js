@@ -35,5 +35,5 @@ const getJsonToCsvTransformSteam = () => {
 
 export const jsonToCsvHandler = async (args) => {
   const transformStream = getJsonToCsvTransformSteam();
-  return fileConfersionHandler(args, '.json', transformStream);
+  return fileConfersionHandler(args, '.json', '.csv', transformStream);
 }

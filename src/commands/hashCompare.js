@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { createReadStream } from 'node:fs';
 import { argParser } from '../utils/argParser.js';
 import { SUPPORTED_ALGORYTHMS } from '../constants.js';
+import { validateFileExtention } from '../utils/validateFileExtention.js';
 
 
 export const hashCompareHandler = async (args) => {
@@ -16,6 +17,8 @@ export const hashCompareHandler = async (args) => {
   if (!SUPPORTED_ALGORYTHMS.includes(parsedArgs.algorithm)) {
     throw new Error('Algorithm is not supported');
   }
+
+  validateFileExtention(parsedArgs.hash, `.${parsedArgs.algorithm.toLowerCase()}`);
 
   const hash = createHash(parsedArgs.algorithm);
   const readableStream = createReadStream(parsedArgs.input);

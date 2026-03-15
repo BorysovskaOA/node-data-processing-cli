@@ -62,7 +62,8 @@ const getCsvToJsonTransformSteam = () => {
     },
     flush(callback) {
       if (!transformBuffer.trim()) {
-        return '\n]';
+        this.push('\n]');
+        return callback();
       }
 
       const parsedLineData = transformBuffer.split(',');
@@ -76,5 +77,5 @@ const getCsvToJsonTransformSteam = () => {
 
 export const csvToJsonHandler = async (args) => {
   const transformStream = getCsvToJsonTransformSteam();
-  return fileConfersionHandler(args, '.csv', transformStream);
+  return fileConfersionHandler(args, '.csv', '.json', transformStream);
 }

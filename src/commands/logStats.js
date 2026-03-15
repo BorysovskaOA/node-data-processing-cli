@@ -1,13 +1,12 @@
 import { stat } from 'node:fs/promises';
-import { extname } from 'node:path';
 import { availableParallelism } from 'node:os';
 import { Worker } from 'node:worker_threads';
 import { createWriteStream } from 'node:fs';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
-import { InvalidInputError } from '../utils/errors.js';
 import { argParser } from '../utils/argParser.js';
 import { INITIAL_LOG_STATS, mergeStats } from '../utils/mergeLogStats.js';
+import { validateFileExtention } from '../utils/validateFileExtention.js';
 
 
 const runWorker = (data) => {
@@ -37,10 +36,7 @@ export const logStatsHandler = async (args) => {
     output: { type: 'path', required: true },
   });
 
-  const inputFileExt = extname(parsedArgs.input).toLowerCase();
-  if (!['.txt', '.log'].includes(inputFileExt)) {
-    throw new InvalidInputError('Invalid file extention');
-  }
+  validateFileExtention(parsedArgs.input, ['.txt', '.log']);
 
   const maxWorkersAvailable = availableParallelism();
   const inputFileStats = await stat(parsedArgs.input);

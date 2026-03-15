@@ -1,6 +1,6 @@
 import { parentPort } from 'worker_threads';
 import { createReadStream } from 'node:fs';
-import { LINE_SEPARATOR } from '../constants.js';
+import { LINE_SEPARATOR, SPACE_SEPARATOR } from '../constants.js';
 import { mergeStats, INITIAL_LOG_STATS } from '../utils/mergeLogStats.js';
 
 
@@ -33,7 +33,7 @@ const getBuffersToProcess = (chunk, maxBufferLength) => {
 }
 
 const processLine = (stats, line) => {
-  const [, level, , statusCode, responseTime, , path] = line.split(' ');
+  const [, level, , statusCode, responseTime, , path] = line.split(SPACE_SEPARATOR);
 
   const lineStat = structuredClone(INITIAL_LOG_STATS);
   lineStat.total++;

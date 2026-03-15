@@ -5,7 +5,7 @@ import process from 'node:process';
 import { getCwd } from './cwdState.js';
 import { InvalidInputError } from './utils/errors.js';
 import { COMMAND_HANDLERS_MAP } from './commands.js';
-import { ANSI_COLORS, ANSI_COLOR_RESET, INVALID_INPUT_ERROR_CODE } from './constants.js';
+import { ANSI_COLORS, ANSI_COLOR_RESET, INVALID_INPUT_ERROR_CODE, SPACE_SEPARATOR } from './constants.js';
 
 
 const WELCOME_TEXT = 'Welcome to Data Processing CLI!';
@@ -49,9 +49,9 @@ export const initRepl = () => {
 
   rl.on('line', async (line) => {
     const lineTrimmed = line.trim();
-    const [command, ...commandArgs] = lineTrimmed.split(' ');
+    const [command, ...commandArgs] = lineTrimmed.split(SPACE_SEPARATOR);
 
-    if (command === '.exit' && commandArgs.length === 0) {
+    if (command === '.exit') {
       rl.close()
     } else {
       await handleCommand(command, commandArgs);
